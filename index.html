@@ -155,27 +155,6 @@
       background-color: rgba(201, 169, 110, 0.1);
     }
 
-    /* 移动端：恢复原生滚动 + 隐藏自定义光标 */
-    @media (max-width: 768px) {
-      body.custom-cursor * {
-        cursor: auto !important;
-      }
-      .cursor-dot, .cursor-ring {
-        display: none !important;
-      }
-      html {
-        scrollbar-width: auto;
-      }
-      html::-webkit-scrollbar {
-        display: block;
-        width: 6px;
-      }
-      html::-webkit-scrollbar-thumb {
-        background: rgba(201, 169, 110, 0.5);
-        border-radius: 3px;
-      }
-    }
-
     /* 作品布局规则：兼容多浏览器 */
     .work-container {
       columns: 1;
@@ -237,11 +216,7 @@
 </head>
 
 <body class="bg-dark text-light font-sans antialiased overflow-x-hidden">
-  <!-- 自定义双光标 -->
-  <div class="cursor-dot"></div>
-  <div class="cursor-ring"></div>
-
-  <!-- 顶部导航 -->
+   <!-- 顶部导航 -->
   <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-500 py-6">
     <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
       <a href="#home" class="text-2xl font-serif tracking-widest">SHUO CHEN.</a>
@@ -478,43 +453,7 @@
     const workContainer = document.querySelector('.work-container');
     let firstEnterWorks = true;
 
-    // 自定义光标：仅桌面端启用，JS加载成功后才隐藏原生光标
-    if (isDesktop) {
-      document.body.classList.add('custom-cursor');
-      
-      let mouseX = 0, mouseY = 0;
-      let ringX = 0, ringY = 0;
-      let cursorReady = false;
-
-      document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        cursorDot.style.left = mouseX + 'px';
-        cursorDot.style.top = mouseY + 'px';
-        if(!cursorReady){
-          cursorDot.classList.add('ready');
-          cursorRing.classList.add('ready');
-          cursorReady = true;
-        }
-      });
-
-      function animateCursor() {
-        ringX += (mouseX - ringX) * 0.28;
-        ringY += (mouseY - ringY) * 0.28;
-        cursorRing.style.left = ringX + 'px';
-        cursorRing.style.top = ringY + 'px';
-        requestAnimationFrame(animateCursor);
-      }
-      animateCursor();
-
-      const interactiveEls = document.querySelectorAll('a, button, .work-card, .portrait-wrap, .filter-btn, #closeModal, .hero-title-text, .about-title');
-      interactiveEls.forEach(el => {
-        el.addEventListener('mouseenter', () => cursorRing.classList.add('hover'));
-        el.addEventListener('mouseleave', () => cursorRing.classList.remove('hover'));
-      });
-    }
-
-    // 滚动导航样式 & 首页渐隐
+       // 滚动导航样式 & 首页渐隐
     let ticking = false;
     function onScroll() {
       if (!ticking) {
