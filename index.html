@@ -2,16 +2,19 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#0a0a0a">
+  <meta name="description" content="陈朔 Shuo Chen - 平面视觉设计师作品集，专注海报、主视觉、商业长图与印刷物料设计">
   <title>陈朔 Shuo Chen | 平面设计作品集</title>
+
+  <!-- 预连接 CDN 加速资源加载 -->
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.bootcdn.net" crossorigin>
+
   <!-- 核心稳定CDN资源 -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-
-  <!-- 预加载首屏关键图片，提升首屏渲染速度 -->
-  <link rel="preload" as="image" href="poster_01.webp" type="image/webp">
-  <link rel="preload" as="image" href="poster_02.webp" type="image/webp">
 
   <!-- Tailwind 定制配置 -->
   <script>
@@ -51,7 +54,32 @@
     }
   </script>
 
-  <!-- 自定义样式 -->
+  <!-- 基础降级样式：JS禁用/Tailwind加载失败时仍可正常浏览 -->
+  <style>
+    /* 核心基础样式，不依赖 Tailwind */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      background-color: #0a0a0a;
+      color: #fafafa;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; border: 0; }
+    button { background: none; border: none; color: inherit; cursor: pointer; font: inherit; }
+    .container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
+    @media (min-width: 768px) { .container { padding: 0 3rem; } }
+
+    /* Firefox 滚动条兼容 */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(201, 169, 110, 0.3) transparent;
+    }
+  </style>
+
+  <!-- Tailwind 自定义工具类 -->
   <style type="text/tailwindcss">
     @layer utilities {
       .content-auto { content-visibility: auto; }
@@ -60,7 +88,6 @@
         opacity: 0;
         transform: translateY(30px);
         transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        will-change: opacity, transform;
       }
       .reveal.active {
         opacity: 1;
@@ -83,14 +110,14 @@
       }
       .hero-fade {
         transition: opacity 0.6s ease, transform 0.6s ease;
-        will-change: opacity, transform;
       }
     }
+  </style>
 
-    /* 噪点纹理（SVG内联，体积极小） */
-    .noise-bg {
-      position: relative;
-    }
+  <!-- 组件级样式 -->
+  <style>
+    /* 噪点纹理 */
+    .noise-bg { position: relative; }
     .noise-bg::before {
       content: "";
       position: absolute;
@@ -100,26 +127,44 @@
       opacity: 0.04;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     }
-    .noise-bg > * {
-      position: relative;
-      z-index: 2;
-    }
+    .noise-bg > * { position: relative; z-index: 2; }
 
-    /* 头像样式 */
+    /* 头像容器 兼容降级 */
     .portrait-wrap {
       width: 100%;
       max-width: 280px;
-      aspect-ratio: 3 / 4;
       overflow: hidden;
+    }
+    @supports (aspect-ratio: 3 / 4) {
+      .portrait-wrap { aspect-ratio: 3 / 4; }
+    }
+    @supports not (aspect-ratio: 3 / 4) {
+      .portrait-wrap {
+        position: relative;
+        padding-top: 133.33%;
+        height: 0;
+      }
+      .portrait-wrap img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
     }
     .portrait-img {
       width: 100%;
       height: 100%;
+      -o-object-fit: cover;
       object-fit: cover;
       transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      -webkit-user-drag: none;
+      -khtml-user-drag: none;
+      -moz-user-drag: none;
+      user-select: none;
     }
 
-    /* 作品卡片交互 */
+    /* 作品卡片 */
     .work-card img {
       transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       -webkit-user-drag: none;
@@ -128,28 +173,29 @@
       height: auto;
       display: block;
     }
+    .work-card {
+      -webkit-column-break-inside: avoid;
+      -moz-column-break-inside: avoid;
+      break-inside: avoid;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      background: #f0f0f0;
+      cursor: pointer;
+    }
 
     /* 选中文本 */
-    ::selection {
-      background: #c9a96e;
-      color: #0a0a0a;
-    }
-    ::-moz-selection {
-      background: #c9a96e;
-      color: #0a0a0a;
-    }
+    ::selection { background: #c9a96e; color: #0a0a0a; }
+    ::-moz-selection { background: #c9a96e; color: #0a0a0a; }
 
-    /* 移动端菜单平滑展开 */
+    /* 移动端菜单 */
     #mobileMenu {
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    #mobileMenu.open {
-      max-height: 320px;
-    }
+    #mobileMenu.open { max-height: 320px; }
 
-    /* 作品瀑布流布局 多浏览器兼容 */
+    /* 瀑布流布局 全浏览器前缀 */
     .work-container {
       columns: 1;
       -webkit-columns: 1;
@@ -158,45 +204,20 @@
       -webkit-column-gap: 1.5rem;
       -moz-column-gap: 1.5rem;
     }
-    .work-card {
-      break-inside: avoid;
-      -webkit-break-inside: avoid;
-      -moz-break-inside: avoid;
-      margin-bottom: 1.5rem;
-    }
     @media (min-width: 768px) {
-      .work-container { 
-        columns: 2;
-        -webkit-columns: 2;
-        -moz-columns: 2;
-      }
+      .work-container { columns: 2; -webkit-columns: 2; -moz-columns: 2; }
     }
     @media (min-width: 1024px) {
-      .work-container { 
-        columns: 3;
-        -webkit-columns: 3;
-        -moz-columns: 3;
-      }
+      .work-container { columns: 3; -webkit-columns: 3; -moz-columns: 3; }
     }
+
     /* 分类专属布局 */
-    .work-container.filter-longimg { 
-      columns: 1 !important;
-      -webkit-columns: 1 !important;
-      -moz-columns: 1 !important;
-    }
+    .work-container.filter-longimg { columns: 1 !important; -webkit-columns: 1 !important; -moz-columns: 1 !important; }
     @media (min-width: 768px) {
-      .work-container.filter-longimg { 
-        columns: 2 !important;
-        -webkit-columns: 2 !important;
-        -moz-columns: 2 !important;
-      }
+      .work-container.filter-longimg { columns: 2 !important; -webkit-columns: 2 !important; -moz-columns: 2 !important; }
     }
     @media (min-width: 1024px) {
-      .work-container.filter-longimg { 
-        columns: 2 !important;
-        -webkit-columns: 2 !important;
-        -moz-columns: 2 !important;
-      }
+      .work-container.filter-longimg { columns: 2 !important; -webkit-columns: 2 !important; -moz-columns: 2 !important; }
     }
     .work-container.filter-mainview,
     .work-container.filter-print,
@@ -204,24 +225,70 @@
       columns: 1 !important;
       -webkit-columns: 1 !important;
       -moz-columns: 1 !important;
+      max-width: 900px;
+      margin: 0 auto;
     }
 
-    /* 触摸设备优化：移除hover效果避免残留 */
+    /* 触摸设备移除 hover 残留 */
     @media (hover: none) {
-      .work-card:hover img { transform: none; }
-      .hero-title-text:hover { transform: none; }
-      .about-title:hover { transform: none; color: inherit; }
-      .portrait-wrap:hover .portrait-img { transform: none; }
+      .work-card:hover img { transform: none !important; }
+      .hero-title-text:hover { transform: none !important; color: inherit !important; }
+      .about-title:hover { transform: none !important; color: inherit !important; }
+      .portrait-wrap:hover .portrait-img { transform: none !important; }
     }
 
-    /* 大图弹窗优化 */
+    /* 大图弹窗 */
+    #imgModal { touch-action: none; }
     #modalImg {
       will-change: opacity;
+      max-width: 100%;
+      max-height: 90vh;
+      -o-object-fit: contain;
+      object-fit: contain;
+    }
+
+    /* 毛玻璃全前缀兼容 */
+    .backdrop-blur-md {
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+    }
+    .backdrop-blur-sm {
+      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(4px);
+    }
+
+    /* 滚动条美化 Webkit */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(201, 169, 110, 0.3);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(201, 169, 110, 0.5); }
+
+    /* 首屏字体降级 clamp */
+    .hero-title {
+      font-size: 3.2rem;
+      font-size: clamp(3.2rem, 11vw, 7.5rem);
+      line-height: 1.05;
+    }
+
+    /* 无 JS 降级提示 */
+    noscript .no-js-tip {
+      padding: 12px;
+      text-align: center;
+      background: #c9a96e;
+      color: #0a0a0a;
+      font-size: 14px;
     }
   </style>
 </head>
 
 <body class="bg-dark text-light font-sans antialiased overflow-x-hidden">
+  <noscript>
+    <div class="no-js-tip">开启 JavaScript 可获得完整的作品集浏览体验</div>
+  </noscript>
+
   <!-- 顶部导航 -->
   <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-500 py-6">
     <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
@@ -256,7 +323,7 @@
           </p>
         </div>
         <div class="overflow-hidden">
-          <h1 class="group font-serif text-[clamp(3.2rem,11vw,7.5rem)] font-medium leading-[1.05] text-balance animate-fade-in-up origin-left" style="animation-delay: 0.4s">
+          <h1 class="group font-serif hero-title font-medium text-balance animate-fade-in-up origin-left" style="animation-delay: 0.4s">
             <span class="hero-title-text inline-block group-hover:text-accent">Visual<br>
             <em class="text-white/80 group-hover:text-accent">Craftsmanship</em></span>
           </h1>
@@ -296,194 +363,185 @@
       </div>
 
       <div class="work-container" id="workContainer">
-        <!-- 海报类 - 前2张为首屏高优先级，其余懒加载；尺寸按竖版海报默认比例设置 -->
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="poster">
-          <picture>
-            <source srcset="poster_01.webp" type="image/webp">
-            <img src="poster_01.jpg" alt="海报设计" width="800" height="1200" fetchpriority="high" decoding="async">
-          </picture>
+        <!-- 海报类 -->
+        <div class="work-card reveal" data-category="poster">
+          <img src="poster_01.jpg" alt="商业海报设计作品 01" width="800" height="1132" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="poster">
-          <picture>
-            <source srcset="poster_02.webp" type="image/webp">
-            <img src="poster_02.jpg" alt="海报设计" width="800" height="1200" fetchpriority="high" decoding="async">
-          </picture>
+        <div class="work-card reveal" data-category="poster">
+          <img src="poster_02.jpg" alt="商业海报设计作品 02" width="800" height="1132" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="poster">
-          <picture>
-            <source srcset="poster_03.webp" type="image/webp">
-            <img src="poster_03.jpg" alt="海报设计" width="800" height="1200" loading="lazy" decoding="async">
-          </picture>
+        <div class="work-card reveal" data-category="poster">
+          <img src="poster_03.jpg" alt="商业海报设计作品 03" width="800" height="1132" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="poster">
-          <img src="poster_04.jpg" alt="海报设计" width="800" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="poster">
+          <img src="poster_04.jpg" alt="商业海报设计作品 04" width="800" height="1132" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="poster">
-          <img src="poster_05.jpg" alt="海报设计" width="800" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="poster">
+          <img src="poster_05.jpg" alt="商业海报设计作品 05" width="800" height="1132" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="poster">
-          <img src="poster_06.jpg" alt="海报设计" width="800" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="poster">
+          <img src="poster_06.jpg" alt="商业海报设计作品 06" width="800" height="1132" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="poster">
-          <img src="poster_07.jpg" alt="海报设计" width="800" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="poster">
+          <img src="poster_07.jpg" alt="商业海报设计作品 07" width="800" height="1132" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="poster">
-          <img src="poster_08.jpg" alt="海报设计" width="800" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="poster">
+          <img src="poster_08.jpg" alt="商业海报设计作品 08" width="800" height="1132" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="poster">
-          <img src="poster_09.jpg" alt="海报设计" width="800" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="poster">
+          <img src="poster_09.jpg" alt="商业海报设计作品 09" width="800" height="1132" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="poster">
-          <img src="poster_10.jpg" alt="海报设计" width="800" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="poster">
+          <img src="poster_10.jpg" alt="商业海报设计作品 10" width="800" height="1132" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="poster">
-          <img src="poster_11.jpg" alt="海报设计" width="800" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="poster">
+          <img src="poster_11.jpg" alt="商业海报设计作品 11" width="800" height="1132" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="poster">
-          <img src="poster_12.jpg" alt="海报设计" width="800" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="poster">
+          <img src="poster_12.jpg" alt="商业海报设计作品 12" width="800" height="1132" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="poster">
-          <img src="poster_13.jpg" alt="海报设计" width="800" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="poster">
+          <img src="poster_13.jpg" alt="商业海报设计作品 13" width="800" height="1132" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="poster">
-          <img src="poster_14.jpg" alt="海报设计" width="800" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="poster">
+          <img src="poster_14.jpg" alt="商业海报设计作品 14" width="800" height="1132" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="poster">
-          <img src="poster_15.jpg" alt="海报设计" width="800" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="poster">
+          <img src="poster_15.jpg" alt="商业海报设计作品 15" width="800" height="1132" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="poster">
-          <img src="poster_16.jpg" alt="海报设计" width="800" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="poster">
+          <img src="poster_16.jpg" alt="商业海报设计作品 16" width="800" height="1132" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="poster">
-          <img src="poster_17.jpg" alt="海报设计" width="800" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="poster">
+          <img src="poster_17.jpg" alt="商业海报设计作品 17" width="800" height="1132" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="poster">
-          <img src="poster_18.jpg" alt="海报设计" width="800" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="poster">
+          <img src="poster_18.jpg" alt="商业海报设计作品 18" width="800" height="1132" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="poster">
-          <img src="poster_19.jpg" alt="海报设计" width="800" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="poster">
+          <img src="poster_19.jpg" alt="商业海报设计作品 19" width="800" height="1132" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="poster">
-          <img src="poster_20.jpg" alt="海报设计" width="800" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="poster">
+          <img src="poster_20.jpg" alt="商业海报设计作品 20" width="800" height="1132" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="poster">
-          <img src="poster_21.jpg" alt="海报设计" width="800" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="poster">
+          <img src="poster_21.jpg" alt="商业海报设计作品 21" width="800" height="1132" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="poster">
-          <img src="poster_22.jpg" alt="海报设计" width="800" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="poster">
+          <img src="poster_22.jpg" alt="商业海报设计作品 22" width="800" height="1132" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="poster">
-          <img src="poster_23.jpg" alt="海报设计" width="800" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="poster">
+          <img src="poster_23.jpg" alt="商业海报设计作品 23" width="800" height="1132" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="poster">
-          <img src="poster_24.jpg" alt="海报设计" width="800" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="poster">
+          <img src="poster_24.jpg" alt="商业海报设计作品 24" width="800" height="1132" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="poster">
-          <img src="poster_25.jpg" alt="海报设计" width="800" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="poster">
+          <img src="poster_25.jpg" alt="商业海报设计作品 25" width="800" height="1132" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
 
         <!-- 长图类 -->
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="longimg">
-          <img src="longimg_01.jpg" alt="长图设计" width="800" height="3200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="longimg">
+          <img src="longimg_01.jpg" alt="商业长图设计作品 01" width="1080" height="3200" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="longimg">
-          <img src="longimg_02.jpg" alt="长图设计" width="800" height="3200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="longimg">
+          <img src="longimg_02.jpg" alt="商业长图设计作品 02" width="1080" height="3200" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="longimg">
-          <img src="longimg_03.jpg" alt="长图设计" width="800" height="3200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="longimg">
+          <img src="longimg_03.jpg" alt="商业长图设计作品 03" width="1080" height="3200" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="longimg">
-          <img src="longimg_04.jpg" alt="长图设计" width="800" height="3200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="longimg">
+          <img src="longimg_04.jpg" alt="商业长图设计作品 04" width="1080" height="3200" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="longimg">
-          <img src="longimg_05.jpg" alt="长图设计" width="800" height="3200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="longimg">
+          <img src="longimg_05.jpg" alt="商业长图设计作品 05" width="1080" height="3200" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="longimg">
-          <img src="longimg_06.jpg" alt="长图设计" width="800" height="3200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="longimg">
+          <img src="longimg_06.jpg" alt="商业长图设计作品 06" width="1080" height="3200" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="longimg">
-          <img src="longimg_07.jpg" alt="长图设计" width="800" height="3200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="longimg">
+          <img src="longimg_07.jpg" alt="商业长图设计作品 07" width="1080" height="3200" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="longimg">
-          <img src="longimg_08.jpg" alt="长图设计" width="800" height="3200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="longimg">
+          <img src="longimg_08.jpg" alt="商业长图设计作品 08" width="1080" height="3200" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="longimg">
-          <img src="longimg_09.jpg" alt="长图设计" width="800" height="3200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="longimg">
+          <img src="longimg_09.jpg" alt="商业长图设计作品 09" width="1080" height="3200" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
 
         <!-- 主视觉类 -->
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="mainview">
-          <img src="mainview_01.jpg" alt="主视觉设计" width="1600" height="900" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="mainview">
+          <img src="mainview_01.jpg" alt="主视觉设计作品 01" width="1920" height="1080" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="mainview">
-          <img src="mainview_02.jpg" alt="主视觉设计" width="1600" height="900" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="mainview">
+          <img src="mainview_02.jpg" alt="主视觉设计作品 02" width="1920" height="1080" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="mainview">
-          <img src="mainview_03.jpg" alt="主视觉设计" width="1600" height="900" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="mainview">
+          <img src="mainview_03.jpg" alt="主视觉设计作品 03" width="1920" height="1080" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="mainview">
-          <img src="mainview_04.jpg" alt="主视觉设计" width="1600" height="900" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="mainview">
+          <img src="mainview_04.jpg" alt="主视觉设计作品 04" width="1920" height="1080" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="mainview">
-          <img src="mainview_05.jpg" alt="主视觉设计" width="1600" height="900" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="mainview">
+          <img src="mainview_05.jpg" alt="主视觉设计作品 05" width="1920" height="1080" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="mainview">
-          <img src="mainview_06.jpg" alt="主视觉设计" width="1600" height="900" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="mainview">
+          <img src="mainview_06.jpg" alt="主视觉设计作品 06" width="1920" height="1080" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="mainview">
-          <img src="mainview_07.jpg" alt="主视觉设计" width="1600" height="900" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="mainview">
+          <img src="mainview_07.jpg" alt="主视觉设计作品 07" width="1920" height="1080" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="mainview">
-          <img src="mainview_08.jpg" alt="主视觉设计" width="1600" height="900" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="mainview">
+          <img src="mainview_08.jpg" alt="主视觉设计作品 08" width="1920" height="1080" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
 
         <!-- 印刷类 -->
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="print">
-          <img src="print_01.jpg" alt="印刷设计" width="1200" height="800" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="print">
+          <img src="print_01.jpg" alt="印刷物料设计 01" width="800" height="600" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="print">
-          <img src="print_02.jpg" alt="印刷设计" width="1200" height="800" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="print">
+          <img src="print_02.jpg" alt="印刷物料设计 02" width="800" height="600" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="print">
-          <img src="print_03.jpg" alt="印刷设计" width="1200" height="800" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="print">
+          <img src="print_03.jpg" alt="印刷物料设计 03" width="800" height="600" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="print">
-          <img src="print_04.jpg" alt="印刷设计" width="1200" height="800" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="print">
+          <img src="print_04.jpg" alt="印刷物料设计 04" width="800" height="600" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="print">
-          <img src="print_05.jpg" alt="印刷设计" width="1200" height="800" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="print">
+          <img src="print_05.jpg" alt="印刷物料设计 05" width="800" height="600" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="print">
-          <img src="print_06.jpg" alt="印刷设计" width="1200" height="800" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="print">
+          <img src="print_06.jpg" alt="印刷物料设计 06" width="800" height="600" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="print">
-          <img src="print_07.jpg" alt="印刷设计" width="1200" height="800" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="print">
+          <img src="print_07.jpg" alt="印刷物料设计 07" width="800" height="600" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="print">
-          <img src="print_08.jpg" alt="印刷设计" width="1200" height="800" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="print">
+          <img src="print_08.jpg" alt="印刷物料设计 08" width="800" height="600" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
 
         <!-- 其他类 -->
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="other">
-          <img src="other_01.jpg" alt="其他设计" width="1200" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="other">
+          <img src="other_01.jpg" alt="其他设计作品 01" width="800" height="800" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="other">
-          <img src="other_02.jpg" alt="其他设计" width="1200" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="other">
+          <img src="other_02.jpg" alt="其他设计作品 02" width="800" height="800" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="other">
-          <img src="other_03.jpg" alt="其他设计" width="1200" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="other">
+          <img src="other_03.jpg" alt="其他设计作品 03" width="800" height="800" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="other">
-          <img src="other_04.jpg" alt="其他设计" width="1200" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="other">
+          <img src="other_04.jpg" alt="其他设计作品 04" width="800" height="800" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="other">
-          <img src="other_05.jpg" alt="其他设计" width="1200" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="other">
+          <img src="other_05.jpg" alt="其他设计作品 05" width="800" height="800" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="other">
-          <img src="other_06.jpg" alt="其他设计" width="1200" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="other">
+          <img src="other_06.jpg" alt="其他设计作品 06" width="800" height="800" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
-        <div class="work-card reveal cursor-pointer overflow-hidden bg-gray-100" data-category="other">
-          <img src="other_07.jpg" alt="其他设计" width="1200" height="1200" loading="lazy" decoding="async">
+        <div class="work-card reveal" data-category="other">
+          <img src="other_07.jpg" alt="其他设计作品 07" width="800" height="800" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.opacity='0'">
         </div>
       </div>
     </div>
@@ -511,7 +569,7 @@
         </div>
         <div class="md:col-span-3 md:col-start-10 reveal flex justify-center">
           <div class="relative portrait-wrap border border-white/15">
-            <img src="27b3f.jpg" alt="陈朔 个人照片" width="280" height="373" loading="lazy" decoding="async" class="portrait-img">
+            <img src="27b3f.jpg" alt="陈朔 个人肖像" class="portrait-img" width="280" height="374" loading="lazy" decoding="async" onerror="this.style.opacity='0'">
             <div class="absolute -bottom-3 -right-3 w-full h-full border border-accent/25 -z-10"></div>
           </div>
         </div>
@@ -559,207 +617,225 @@
 
   <!-- 作品大图弹窗 -->
   <div id="imgModal" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm hidden items-center justify-center p-4">
-    <button id="closeModal" class="absolute top-8 right-8 text-white/60 hover:text-white text-2xl transition-colors z-10" aria-label="关闭大图">
+    <button id="closeModal" class="absolute top-8 right-8 text-white/60 hover:text-white text-2xl transition-colors z-10" aria-label="关闭大图预览">
       <i class="fa fa-times"></i>
     </button>
-    <img id="modalImg" src="" alt="作品大图" class="max-w-full max-h-[90vh] object-contain opacity-0 transition-opacity duration-500">
+    <img id="modalImg" src="" alt="作品大图预览" class="opacity-0 transition-opacity duration-500">
   </div>
 
   <!-- 交互脚本 -->
   <script>
-    // DOM 元素缓存
-    const navbar = document.getElementById('navbar');
-    const menuBtn = document.getElementById('menuBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-    const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
-    const revealElements = document.querySelectorAll('.reveal');
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const workCards = document.querySelectorAll('.work-card');
-    const imgModal = document.getElementById('imgModal');
-    const modalImg = document.getElementById('modalImg');
-    const closeModal = document.getElementById('closeModal');
-    const navLinks = document.querySelectorAll('.nav-link');
-    const heroContent = document.getElementById('heroContent');
-    const workContainer = document.getElementById('workContainer');
-    let firstEnterWorks = true;
-    let ticking = false;
+    document.addEventListener('DOMContentLoaded', function () {
+      // DOM 元素缓存
+      const navbar = document.getElementById('navbar');
+      const menuBtn = document.getElementById('menuBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+      const revealElements = document.querySelectorAll('.reveal');
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const workCards = document.querySelectorAll('.work-card');
+      const imgModal = document.getElementById('imgModal');
+      const modalImg = document.getElementById('modalImg');
+      const closeModal = document.getElementById('closeModal');
+      const navLinks = document.querySelectorAll('.nav-link');
+      const heroContent = document.getElementById('heroContent');
+      const workContainer = document.getElementById('workContainer');
+      const sections = ['home', 'works', 'about', 'contact'].map(id => document.getElementById(id));
+      
+      let firstEnterWorks = true;
+      let ticking = false;
+      let navbarHeight = navbar.offsetHeight;
 
-    // 滚动监听：使用被动监听提升滚动性能
-    function onScroll() {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const scrollY = window.scrollY;
-          
-          // 首页渐隐视差
-          const fadeVal = Math.max(0, 1 - scrollY / 400);
-          heroContent.style.opacity = fadeVal;
-          heroContent.style.transform = `translateY(${scrollY * 0.15}px)`;
+      // 更新导航高度
+      function updateNavbarHeight() {
+        navbarHeight = navbar.offsetHeight;
+      }
+      window.addEventListener('resize', updateNavbarHeight);
 
-          // 导航栏滚动样式
-          if (scrollY > 80) {
-            navbar.classList.add('py-3', 'bg-dark/80', 'backdrop-blur-md', 'border-b', 'border-white/5');
-          } else {
-            navbar.classList.remove('py-3', 'bg-dark/80', 'backdrop-blur-md', 'border-b', 'border-white/5');
-          }
+      // 滚动监听：节流 + 多效果合一
+      function onScroll() {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            const scrollY = window.scrollY;
+            
+            // 首页视差与渐隐（超过首屏后停止计算）
+            if (scrollY < window.innerHeight) {
+              const fadeVal = Math.max(0, 1 - scrollY / 400);
+              heroContent.style.opacity = fadeVal;
+              heroContent.style.transform = `translateY(${scrollY * 0.2}px)`;
+            }
 
-          // 导航高亮
-          const sections = ['home', 'works', 'about', 'contact'];
-          let current = '';
-          sections.forEach(id => {
-            const sec = document.getElementById(id);
-            if (sec) {
-              const top = sec.offsetTop - 150;
-              const height = sec.offsetHeight;
-              if (scrollY >= top && scrollY < top + height) {
-                current = id;
+            // 导航栏滚动样式
+            if (scrollY > 80) {
+              navbar.classList.add('py-3', 'bg-dark/80', 'backdrop-blur-md', 'border-b', 'border-white/5');
+            } else {
+              navbar.classList.remove('py-3', 'bg-dark/80', 'backdrop-blur-md', 'border-b', 'border-white/5');
+            }
+            updateNavbarHeight();
+
+            // 导航高亮：基于视口位置判断
+            let current = '';
+            for (let i = sections.length - 1; i >= 0; i--) {
+              const sec = sections[i];
+              if (!sec) continue;
+              const rect = sec.getBoundingClientRect();
+              if (rect.top <= 150) {
+                current = sec.id;
+                break;
               }
             }
+            
+            navLinks.forEach(link => {
+              link.classList.remove('nav-active');
+              if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('nav-active');
+              }
+            });
+
+            // 首次进入作品区自动切换海报分类
+            if (current === 'works' && firstEnterWorks) {
+              firstEnterWorks = false;
+              const posterBtn = document.querySelector('.filter-btn[data-filter="poster"]');
+              if (posterBtn) posterBtn.click();
+            }
+
+            ticking = false;
           });
-          navLinks.forEach(link => {
-            link.classList.remove('nav-active');
-            if (link.getAttribute('href') === `#${current}`) {
-              link.classList.add('nav-active');
+          ticking = true;
+        }
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll(); // 初始化执行一次
+
+      // 移动端菜单切换
+      menuBtn.addEventListener('click', () => {
+        const isOpen = mobileMenu.classList.toggle('open');
+        const icon = menuBtn.querySelector('i');
+        icon.className = isOpen ? 'fa fa-times' : 'fa fa-bars';
+      });
+
+      // 移动端点击链接关闭菜单
+      mobileNavLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.remove('open');
+          menuBtn.querySelector('i').className = 'fa fa-bars';
+        });
+      });
+
+      // 滚动入场动画 + 降级兼容
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+              setTimeout(() => {
+                entry.target.classList.add('active');
+              }, index * 50);
+              observer.unobserve(entry.target);
             }
           });
-
-          // 首次进入作品区自动切换海报分类
-          if (current === 'works' && firstEnterWorks) {
-            firstEnterWorks = false;
-            const posterBtn = document.querySelector('.filter-btn[data-filter="poster"]');
-            if (posterBtn) posterBtn.click();
-          }
-
-          ticking = false;
-        });
-        ticking = true;
+        }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+        
+        revealElements.forEach(el => observer.observe(el));
+      } else {
+        revealElements.forEach(el => el.classList.add('active'));
       }
-    }
-    window.addEventListener('scroll', onScroll, { passive: true });
 
-    // 移动端菜单
-    menuBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('open');
-      const icon = menuBtn.querySelector('i');
-      icon.classList.toggle('fa-bars');
-      icon.classList.toggle('fa-times');
-    });
+      // 作品分类筛选
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // 按钮状态切换
+          filterBtns.forEach(b => b.classList.remove('filter-active'));
+          btn.classList.add('filter-active');
+          const filterVal = btn.dataset.filter;
 
-    // 移动端点击链接自动关闭菜单
-    mobileNavLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu.classList.remove('open');
-        const icon = menuBtn.querySelector('i');
-        icon.classList.add('fa-bars');
-        icon.classList.remove('fa-times');
-      });
-    });
+          // 切换容器布局类
+          workContainer.className = 'work-container';
+          if (filterVal === 'longimg') workContainer.classList.add('filter-longimg');
+          else if (filterVal === 'mainview') workContainer.classList.add('filter-mainview');
+          else if (filterVal === 'print') workContainer.classList.add('filter-print');
+          else if (filterVal === 'other') workContainer.classList.add('filter-other');
 
-    // 滚动入场动画 + 降级兼容
-    if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
-          if (entry.isIntersecting) {
-            setTimeout(() => {
-              entry.target.classList.add('active');
-            }, index * 50);
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
-      revealElements.forEach(el => observer.observe(el));
-    } else {
-      revealElements.forEach(el => el.classList.add('active'));
-    }
-
-    // 作品分类筛选
-    filterBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        filterBtns.forEach(b => b.classList.remove('filter-active'));
-        btn.classList.add('filter-active');
-        const filterVal = btn.dataset.filter;
-
-        // 切换布局类
-        workContainer.className = 'work-container';
-        if (filterVal === 'longimg') workContainer.classList.add('filter-longimg');
-        else if (filterVal === 'mainview') workContainer.classList.add('filter-mainview');
-        else if (filterVal === 'print') workContainer.classList.add('filter-print');
-        else if (filterVal === 'other') workContainer.classList.add('filter-other');
-
-        // 卡片显隐动画
-        workCards.forEach(card => {
-          const cat = card.dataset.category;
-          if (filterVal === 'all' || cat === filterVal) {
-            card.style.display = 'block';
-            requestAnimationFrame(() => {
-              card.style.opacity = '1';
-              card.style.transform = 'translateY(0)';
-            });
-          } else {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            setTimeout(() => {
-              card.style.display = 'none';
-            }, 250);
-          }
-        });
-      });
-    });
-
-    // 大图弹窗功能
-    const closeModalFunc = () => {
-      modalImg.style.opacity = '0';
-      setTimeout(() => {
-        imgModal.classList.add('hidden');
-        imgModal.classList.remove('flex');
-        document.body.style.overflow = '';
-        modalImg.src = '';
-      }, 300);
-    };
-
-    workCards.forEach(card => {
-      card.addEventListener('click', () => {
-        // 优先取WebP格式的大图，没有则降级为JPG
-        const picture = card.querySelector('picture source');
-        const img = card.querySelector('img');
-        const imgSrc = picture ? picture.srcset : img.src;
-
-        imgModal.classList.remove('hidden');
-        imgModal.classList.add('flex');
-        document.body.style.overflow = 'hidden';
-        setTimeout(() => {
-          modalImg.src = imgSrc;
-          modalImg.style.opacity = '1';
-        }, 80);
-      });
-    });
-
-    closeModal.addEventListener('click', closeModalFunc);
-    imgModal.addEventListener('click', (e) => {
-      if (e.target === imgModal) closeModalFunc();
-    });
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') closeModalFunc();
-    });
-
-    // 图片懒加载降级兼容
-    if (!('loading' in HTMLImageElement.prototype)) {
-      document.querySelectorAll('img[loading="lazy"]').forEach(img => {
-        img.src = img.src;
-      });
-    }
-
-    // 平滑滚动
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          window.scrollTo({
-            top: target.offsetTop - 80,
-            behavior: 'smooth'
+          // 卡片显隐过渡
+          workCards.forEach(card => {
+            const cat = card.dataset.category;
+            const show = filterVal === 'all' || cat === filterVal;
+            
+            if (show) {
+              card.style.display = 'block';
+              requestAnimationFrame(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+              });
+            } else {
+              card.style.opacity = '0';
+              card.style.transform = 'translateY(20px)';
+              setTimeout(() => {
+                card.style.display = 'none';
+              }, 250);
+            }
           });
+        });
+      });
+
+      // 大图弹窗功能
+      function closeModalFunc() {
+        modalImg.style.opacity = '0';
+        setTimeout(() => {
+          imgModal.classList.add('hidden');
+          imgModal.classList.remove('flex');
+          document.body.style.overflow = '';
+          modalImg.removeAttribute('src');
+        }, 300);
+      }
+
+      workCards.forEach(card => {
+        card.addEventListener('click', () => {
+          const imgEl = card.querySelector('img');
+          if (!imgEl || !imgEl.src) return;
+          
+          imgModal.classList.remove('hidden');
+          imgModal.classList.add('flex');
+          document.body.style.overflow = 'hidden';
+          
+          // 加载完成后淡入
+          modalImg.onload = () => {
+            modalImg.style.opacity = '1';
+          };
+          setTimeout(() => {
+            modalImg.src = imgEl.src;
+          }, 80);
+        });
+      });
+
+      closeModal.addEventListener('click', closeModalFunc);
+      imgModal.addEventListener('click', (e) => {
+        if (e.target === imgModal) closeModalFunc();
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && !imgModal.classList.contains('hidden')) {
+          closeModalFunc();
         }
       });
+
+      // 平滑锚点滚动：动态偏移导航高度
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href');
+          const target = document.querySelector(targetId);
+          if (target) {
+            const top = target.getBoundingClientRect().top + window.scrollY - navbarHeight - 10;
+            window.scrollTo({ top: top, behavior: 'smooth' });
+          }
+        });
+      });
+
+      // 图片懒加载降级（极老浏览器）
+      if (!('loading' in HTMLImageElement.prototype)) {
+        document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+          img.setAttribute('loading', 'eager');
+        });
+      }
     });
   </script>
 </body>
