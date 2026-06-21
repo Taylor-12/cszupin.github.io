@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>陈朔 Shuo Chen | 平面设计作品集</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.font.im">
+  <link rel="preconnect" href="https://fonts.gstatic.font.im" crossorigin>
+  <link href="https://fonts.font.im/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            dark: '#0a0a0a',
+            light: '#fafafa',
+            accent: '#c9a96e',
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', '"Noto Serif SC"', '"Songti SC"', 'SimSun', '"Times New Roman"', 'serif'],
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', '"PingFang SC"', '"Microsoft YaHei"', 'sans-serif'],
+          },
+          animation: {
+            'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards',
+            'fade-in': 'fadeIn 0.7s ease forwards',
+            'line-grow': 'lineGrow 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards',
+          },
+          keyframes: {
+            fadeInUp: {
+              '0%': { opacity: '0', transform: 'translateY(40px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            lineGrow: {
+              '0%': { width: '0' },
+              '100%': { width: '60px' },
+            },
+          },
+        },
+      }
+    }
+  </script>
+
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto { content-visibility: auto; }
+      .text-balance { text-wrap: balance; }
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        will-change: transform, opacity;
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .filter-active {
+        color: #c9a96e;
+        border-bottom: 1px solid #c9a96e;
+      }
+      .nav-active {
+        color: #c9a96e;
+        border-bottom: 1px solid #c9a96e;
+      }
+      .about-title {
+        transition: all 0.4s ease;
+      }
+      .about-title:hover {
+        color: #c9a96e;
+        transform: scale(1.02);
+      }
+      .hero-title-text {
+        transition: transform 0.4s ease;
+        transform-origin: left center;
+      }
+      .hero-title-text:hover {
+        transform: scale(1.03);
+      }
+      .hero-fade {
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+    }
+
+    .work-card img {
+      transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      -webkit-user-drag: none;
+      user-select: none;
+      will-change: transform;
+    }
+    @media (min-width:768px){
+      .work-card:hover img {
+        transform: scale(1.04);
+        -webkit-transform: scale(1.04);
+      }
+    }
+
+    ::selection {
+      background: #c9a96e;
+      color: #0a0a0a;
+    }
+    ::-moz-selection {
+      background: #c9a96e;
+      color: #0a0a0a;
+    }
+
+    body.custom-cursor * {
+      cursor: none !important;
+    }
+    .cursor-dot, .cursor-ring {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      -webkit-transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .cursor-dot.ready, .cursor-ring.ready {
+      opacity: 1;
+    }
+    .cursor-dot {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      background-color: #c9a96e;
+      border-radius: 50%;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      -webkit-transform: translate(-50%, -50%);
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(201, 169, 110, 0.5);
+      border-radius: 50%;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      -webkit-transform: translate(-50%, -50%);
+      transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+      -webkit-transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+    }
+    .cursor-ring.hover {
+      width: 60px;
+      height: 60px;
+      border-color: #c9a96e;
+      background-color: rgba(201, 169, 110, 0.1);
+    }
+
+    @media (max-width: 768px) {
+      body.custom-cursor * {
+        cursor: auto !important;
+      }
+      .cursor-dot, .cursor-ring {
+        display: none !important;
+      }
+      html {
+        scrollbar-width: auto;
+      }
+      html::-webkit-scrollbar {
+        display: block;
+        width: 6px;
+      }
+      html::-webkit-scrollbar-thumb {
+        background: rgba(201, 169, 110, 0.5);
+        border-radius: 3px;
+      }
+      .work-container {
+        columns: 1 !important;
+        -webkit-columns: 1 !important;
+        -moz-columns: 1 !important;
+      }
+    }
+
+    .work-container {
+      columns: 1;
+      -webkit-columns: 1;
+      -moz-columns: 1;
+      column-gap: 1.5rem;
+      -webkit-column-gap: 1.5rem;
+      -moz-column-gap: 1.5rem;
+    }
+    @media (min-width: 768px) {
+      .work-container { 
+        columns: 2;
+        -webkit-columns: 2;
+        -moz-columns: 2;
+      }
+    }
+    @media (min-width: 1024px) {
+      .work-container { 
+        columns: 3;
+        -webkit-columns: 3;
+        -moz-columns: 3;
+      }
+    }
+    .work-container.filter-longimg { 
+      columns: 1 !important;
+      -webkit-columns: 1 !important;
+      -moz-columns: 1 !important;
+    }
+    @media (min-width: 768px) {
+      .work-container.filter-longimg { 
+        columns: 2 !important;
+        -webkit-columns: 2 !important;
+        -moz-columns: 2 !important;
+      }
+    }
+    @media (min-width: 1024px) {
+      .work-container.filter-longimg { 
+        columns: 2 !important;
+        -webkit-columns: 2 !important;
+        -moz-columns: 2 !important;
+      }
+    }
+    .work-container.filter-mainview,
+    .work-container.filter-print,
+    .work-container.filter-other {
+      columns: 1 !important;
+      -webkit-columns: 1 !important;
+      -moz-columns: 1 !important;
+    }
+
+    img {
+      border: 0;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+
+<body class="bg-dark text-light font-sans antialiased overflow-x-hidden">
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+
+  <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-500 py-6">
+    <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
+      <a href="#home" class="text-2xl font-serif tracking-widest">SHUO CHEN.</a>
+      <nav class="hidden md:flex gap-10 text-sm tracking-[0.2em] uppercase">
+        <a href="#home" class="nav-link relative pb-1 hover:text-accent transition-colors">首页</a>
+        <a href="#works" class="nav-link relative pb-1 hover:text-accent transition-colors">作品</a>
+        <a href="#about" class="nav-link relative pb-1 hover:text-accent transition-colors">关于</a>
+        <a href="#contact" class="nav-link relative pb-1 hover:text-accent transition-colors">联系</a>
+      </nav>
+      <button id="menuBtn" class="md:hidden text-lg" aria-label="打开菜单">
+        <i class="fa fa-bars"></i>
+      </button>
+    </div>
+    <div id="mobileMenu" class="md:hidden hidden bg-dark/95 backdrop-blur-md border-t border-white/10 px-6 py-8 mt-6">
+      <nav class="flex flex-col gap-6 text-sm tracking-widest uppercase">
+        <a href="#home" class="mobile-nav-link">首页</a>
+        <a href="#works" class="mobile-nav-link">作品</a>
+        <a href="#about" class="mobile-nav-link">关于</a>
+        <a href="#contact" class="mobile-nav-link">联系</a>
+      </nav>
+    </div>
+  </header>
+
+  <section id="home" class="relative min-h-screen flex items-center overflow-hidden">
+    <div id="heroContent" class="hero-fade container mx-auto px-6 md:px-12 relative z-10 pt-20">
+      <div class="max-w-6xl scale-105 md:scale-110 origin-left">
+        <div class="overflow-hidden mb-6">
+          <p class="text-accent text-sm tracking-[0.3em] uppercase animate-fade-in-up" style="animation-delay: 0.2s">
+            陈朔 · 平面视觉设计师
+          </p>
+        </div>
+        <div class="overflow-hidden">
+          <h1 class="group font-serif text-[clamp(3.2rem,11vw,7.5rem)] font-medium leading-[1.05] text-balance animate-fade-in-up origin-left" style="animation-delay: 0.4s">
+            <span class="hero-title-text inline-block group-hover:text-accent">Visual<br>
+            <em class="text-white/80 group-hover:text-accent">Craftsmanship</em></span>
+          </h1>
+        </div>
+        <div class="flex items-center gap-8 mt-10 animate-fade-in" style="animation-delay: 0.9s; opacity: 0">
+          <span class="w-[70px] h-px bg-accent animate-line-grow" style="animation-delay: 1.1s"></span>
+          <p class="text-white/60 max-w-lg text-base leading-relaxed">
+            专注海报、主视觉、商业长图与印刷物料等设计，以极致美学构建精准的品牌视觉表达。
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-white/40 text-xs tracking-widest animate-fade-in" style="animation-delay: 1.5s; opacity: 0">
+      <span>SCROLL</span>
+      <div class="w-px h-10 bg-white/20 relative overflow-hidden">
+        <div class="w-full h-3 bg-accent absolute top-0 animate-bounce"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="works" class="py-24 md:py-28 bg-light text-dark">
+    <div class="container mx-auto px-6 md:px-12">
+      <div class="flex flex-col md:flex-row justify-between items-end mb-16 reveal">
+        <div>
+          <p class="text-accent text-xs tracking-[0.3em] uppercase mb-3">Selected</p>
+          <h2 class="font-serif text-4xl md:text-5xl font-medium">作品展示</h2>
+        </div>
+        <div class="flex flex-wrap gap-x-8 gap-y-2 mt-8 md:mt-0 text-sm tracking-[0.2em] uppercase">
+          <button class="filter-btn pb-1 border-b border-transparent transition-all" data-filter="poster">海报</button>
+          <button class="filter-btn pb-1 border-b border-transparent transition-all" data-filter="longimg">长图</button>
+          <button class="filter-btn pb-1 border-b border-transparent transition-all" data-filter="mainview">主视觉</button>
+          <button class="filter-btn pb-1 border-b border-transparent transition-all" data-filter="print">印刷</button>
+          <button class="filter-btn pb-1 border-b border-transparent transition-all" data-filter="other">其他</button>
+          <button class="filter-btn filter-active pb-1 border-b border-transparent transition-all" data-filter="all">整合</button>
+        </div>
+      </div>
+
+      <div class="work-container">
+        <!-- 海报 -->
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="poster"><div class="overflow-hidden bg-gray-100"><img src="poster_01.jpg" alt="海报设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="poster"><div class="overflow-hidden bg-gray-100"><img src="poster_02.jpg" alt="海报设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="poster"><div class="overflow-hidden bg-gray-100"><img src="poster_03.jpg" alt="海报设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="poster"><div class="overflow-hidden bg-gray-100"><img src="poster_04.jpg" alt="海报设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="poster"><div class="overflow-hidden bg-gray-100"><img src="poster_05.jpg" alt="海报设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="poster"><div class="overflow-hidden bg-gray-100"><img src="poster_06.jpg" alt="海报设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="poster"><div class="overflow-hidden bg-gray-100"><img src="poster_07.jpg" alt="海报设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="poster"><div class="overflow-hidden bg-gray-100"><img src="poster_08.jpg" alt="海报设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="poster"><div class="overflow-hidden bg-gray-100"><img src="poster_09.jpg" alt="海报设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="poster"><div class="overflow-hidden bg-gray-100"><img src="poster_10.jpg" alt="海报设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="poster"><div class="overflow-hidden bg-gray-100"><img src="poster_11.jpg" alt="海报设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="poster"><div class="overflow-hidden bg-gray-100"><img src="poster_12.jpg" alt="海报设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="poster"><div class="overflow-hidden bg-gray-100"><img src="poster_13.jpg" alt="海报设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="poster"><div class="overflow-hidden bg-gray-100"><img src="poster_14.jpg" alt="海报设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="poster"><div class="overflow-hidden bg-gray-100"><img src="poster_15.jpg" alt="海报设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="poster"><div class="overflow-hidden bg-gray-100"><img src="poster_16.jpg" alt="海报设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="poster"><div class="overflow-hidden bg-gray-100"><img src="poster_17.jpg" alt="海报设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="poster"><div class="overflow-hidden bg-gray-100"><img src="poster_18.jpg" alt="海报设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="poster"><div class="overflow-hidden bg-gray-100"><img src="poster_19.jpg" alt="海报设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="poster"><div class="overflow-hidden bg-gray-100"><img src="poster_20.jpg" alt="海报设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="poster"><div class="overflow-hidden bg-gray-100"><img src="poster_21.jpg" alt="海报设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="poster"><div class="overflow-hidden bg-gray-100"><img src="poster_22.jpg" alt="海报设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="poster"><div class="overflow-hidden bg-gray-100"><img src="poster_23.jpg" alt="海报设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="poster"><div class="overflow-hidden bg-gray-100"><img src="poster_24.jpg" alt="海报设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="poster"><div class="overflow-hidden bg-gray-100"><img src="poster_25.jpg" alt="海报设计" class="w-full h-auto" loading="lazy"></div></div>
+        <!-- 长图 -->
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="longimg"><div class="overflow-hidden bg-gray-100"><img src="longimg_01.jpg" alt="长图设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="longimg"><div class="overflow-hidden bg-gray-100"><img src="longimg_02.jpg" alt="长图设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="longimg"><div class="overflow-hidden bg-gray-100"><img src="longimg_03.jpg" alt="长图设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="longimg"><div class="overflow-hidden bg-gray-100"><img src="longimg_04.jpg" alt="长图设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="longimg"><div class="overflow-hidden bg-gray-100"><img src="longimg_05.jpg" alt="长图设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="longimg"><div class="overflow-hidden bg-gray-100"><img src="longimg_06.jpg" alt="长图设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="longimg"><div class="overflow-hidden bg-gray-100"><img src="longimg_07.jpg" alt="长图设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="longimg"><div class="overflow-hidden bg-gray-100"><img src="longimg_08.jpg" alt="长图设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="longimg"><div class="overflow-hidden bg-gray-100"><img src="longimg_09.jpg" alt="长图设计" class="w-full h-auto" loading="lazy"></div></div>
+        <!-- 主视觉 -->
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="mainview"><div class="overflow-hidden bg-gray-100"><img src="mainview_01.jpg" alt="主视觉设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="mainview"><div class="overflow-hidden bg-gray-100"><img src="mainview_02.jpg" alt="主视觉设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="mainview"><div class="overflow-hidden bg-gray-100"><img src="mainview_03.jpg" alt="主视觉设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="mainview"><div class="overflow-hidden bg-gray-100"><img src="mainview_04.jpg" alt="主视觉设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="mainview"><div class="overflow-hidden bg-gray-100"><img src="mainview_05.jpg" alt="主视觉设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="mainview"><div class="overflow-hidden bg-gray-100"><img src="mainview_06.jpg" alt="主视觉设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="mainview"><div class="overflow-hidden bg-gray-100"><img src="mainview_07.jpg" alt="主视觉设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="mainview"><div class="overflow-hidden bg-gray-100"><img src="mainview_08.jpg" alt="主视觉设计" class="w-full h-auto" loading="lazy"></div></div>
+        <!-- 印刷 -->
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="print"><div class="overflow-hidden bg-gray-100"><img src="print_01.jpg" alt="印刷设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="print"><div class="overflow-hidden bg-gray-100"><img src="print_02.jpg" alt="印刷设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="print"><div class="overflow-hidden bg-gray-100"><img src="print_03.jpg" alt="印刷设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="print"><div class="overflow-hidden bg-gray-100"><img src="print_04.jpg" alt="印刷设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="print"><div class="overflow-hidden bg-gray-100"><img src="print_05.jpg" alt="印刷设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="print"><div class="overflow-hidden bg-gray-100"><img src="print_06.jpg" alt="印刷设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="print"><div class="overflow-hidden bg-gray-100"><img src="print_07.jpg" alt="印刷设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="print"><div class="overflow-hidden bg-gray-100"><img src="print_08.jpg" alt="印刷设计" class="w-full h-auto" loading="lazy"></div></div>
+        <!-- 其他 -->
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="other"><div class="overflow-hidden bg-gray-100"><img src="other_01.jpg" alt="其他设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="other"><div class="overflow-hidden bg-gray-100"><img src="other_02.jpg" alt="其他设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="other"><div class="overflow-hidden bg-gray-100"><img src="other_03.jpg" alt="其他设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="other"><div class="overflow-hidden bg-gray-100"><img src="other_04.jpg" alt="其他设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="other"><div class="overflow-hidden bg-gray-100"><img src="other_05.jpg" alt="其他设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="other"><div class="overflow-hidden bg-gray-100"><img src="other_06.jpg" alt="其他设计" class="w-full h-auto" loading="lazy"></div></div>
+        <div class="work-card reveal cursor-pointer mb-6 md:mb-8 break-inside-avoid" data-category="other"><div class="overflow-hidden bg-gray-100"><img src="other_07.jpg" alt="其他设计" class="w-full h-auto" loading="lazy"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="py-24 md:py-28 bg-dark text-light">
+    <div class="container mx-auto px-6 md:px-12">
+      <div class="grid md:grid-cols-12 gap-12 items-start">
+        <div class="md:col-span-8 reveal">
+          <p class="text-accent text-xs tracking-[0.3em] uppercase mb-3">About Me</p>
+          <h2 class="font-serif text-4xl md:text-5xl font-medium mb-8 about-title">陈朔</h2>
+          <div class="w-16 h-px bg-accent mb-8"></div>
+          <p class="text-white/60 leading-relaxed mb-6">
+            平面视觉设计师，专注商业视觉设计领域，服务覆盖教育、金融、通讯、地产、旅游、医疗等多个行业，具备丰富的跨品类设计经验。
+          </p>
+          <p class="text-white/60 leading-relaxed mb-10">
+            深耕海报设计、视觉主画面、商业长图、印刷物料等品类，以极致美学为核心，兼顾视觉表达与商业价值，精通 Photoshop、Illustrator 与专业 AI 设计工具。
+          </p>
+          <div class="flex gap-12 text-xs tracking-widest uppercase text-white/40">
+            <div><p class="text-3xl font-serif text-white mb-2">5+</p><p>Years</p></div>
+            <div><p class="text-3xl font-serif text-white mb-2">80+</p><p>Projects</p></div>
+            <div><p class="text-3xl font-serif text-white mb-2">50+</p><p>Clients</p></div>
+          </div>
+        </div>
+        <div class="md:col-span-3 md:col-start-10 reveal flex justify-center">
+          <div class="relative overflow-hidden border border-white/15">
+            <img src="27b3f.jpg" alt="陈朔 证件照" class="w-full h-auto">
+            <div class="absolute -bottom-3 -right-3 w-full h-full border border-accent/25 -z-10"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="py-20 md:py-24 bg-light text-dark">
+    <div class="container mx-auto px-6 md:px-12 reveal">
+      <div class="max-w-3xl mx-auto text-center">
+        <p class="text-accent text-xs tracking-[0.3em] uppercase mb-3">Contact</p>
+        <h2 class="font-serif text-4xl md:text-5xl font-medium mb-8">合作咨询</h2>
+        <p class="text-gray-500 mx-auto mb-10">
+          若有品牌设计、项目合作相关需求，欢迎通过以下方式联络，我将尽快回复。
+        </p>
+        <div class="flex flex-col md:flex-row justify-center items-center gap-10 md:gap-16">
+          <div class="flex flex-col items-center gap-2">
+            <i class="fa fa-envelope-o text-accent text-xl mb-2"></i>
+            <span class="text-xs tracking-widest uppercase text-gray-400">Email</span>
+            <span>1932265200@qq.com</span>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <i class="fa fa-wechat text-accent text-xl mb-2"></i>
+            <span class="text-xs tracking-widest uppercase text-gray-400">WeChat</span>
+            <span>cs1932265</span>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <i class="fa fa-behance text-accent text-xl mb-2"></i>
+            <span class="text-xs tracking-widest uppercase text-gray-400">Behance</span>
+            <span>@shuochen</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="py-8 border-t border-white/10 bg-dark text-white/40 text-xs tracking-widest">
+    <div class="container mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-4">
+      <p>© 陈朔 Shuo Chen. All rights reserved.</p>
+      <p>Graphic Design Portfolio</p>
+    </div>
+  </footer>
+
+  <div id="imgModal" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm hidden items-center justify-center p-4">
+    <button id="closeModal" class="absolute top-8 right-8 text-white/60 hover:text-white text-2xl transition-colors" aria-label="关闭大图">
+      <i class="fa fa-times"></i>
+    </button>
+    <img id="modalImg" src="" alt="作品大图" class="max-w-full max-h-[90vh] object-contain opacity-0 transition-opacity duration-500">
+  </div>
+
+  <script>
+    const isDesktop = window.innerWidth > 768;
+    const cursorDot = document.querySelector('.cursor-dot');
+    const cursorRing = document.querySelector('.cursor-ring');
+    const navbar = document.getElementById('navbar');
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+    const revealElements = document.querySelectorAll('.reveal');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const workCards = document.querySelectorAll('.work-card');
+    const imgModal = document.getElementById('imgModal');
+    const modalImg = document.getElementById('modalImg');
+    const closeModal = document.getElementById('closeModal');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const heroContent = document.getElementById('heroContent');
+    const workContainer = document.querySelector('.work-container');
+    let firstEnterWorks = true;
+
+    if (isDesktop) {
+      document.body.classList.add('custom-cursor');
+      let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0, cursorReady = false;
+      document.addEventListener('mousemove', e => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        cursorDot.style.left = mouseX + 'px';
+        cursorDot.style.top = mouseY + 'px';
+        if(!cursorReady){
+          cursorDot.classList.add('ready');
+          cursorRing.classList.add('ready');
+          cursorReady = true;
+        }
+      });
+      function animateCursor(){
+        ringX += (mouseX - ringX) * 0.28;
+        ringY += (mouseY - ringY) * 0.28;
+        cursorRing.style.left = ringX + 'px';
+        cursorRing.style.top = ringY + 'px';
+        requestAnimationFrame(animateCursor);
+      }
+      animateCursor();
+      document.querySelectorAll('a, button, .work-card, .filter-btn, #closeModal').forEach(el=>{
+        el.onmouseenter = ()=>cursorRing.classList.add('hover');
+        el.onmouseleave = ()=>cursorRing.classList.remove('hover');
+      })
+    }
+
+    let ticking = false;
+    function onScroll(){
+      if(!ticking){
+        requestAnimationFrame(()=>{
+          const scrollY = window.scrollY;
+          heroContent.style.opacity = Math.max(0, 1 - scrollY / 400);
+          heroContent.style.transform = `translateY(${scrollY * 0.2}px)`;
+          if(scrollY > 80){
+            navbar.classList.add('py-3','bg-dark/80','backdrop-blur-md','border-b','border-white/5');
+          }else{
+            navbar.classList.remove('py-3','bg-dark/80','backdrop-blur-md','border-b','border-white/5');
+          }
+          const sections = ['home','works','about','contact'];
+          let cur = '';
+          sections.forEach(id=>{
+            const sec = document.getElementById(id);
+            if(!sec) return;
+            const top = sec.offsetTop - 150;
+            if(scrollY >= top && scrollY < top + sec.offsetHeight) cur = id;
+          })
+          navLinks.forEach(link=>{
+            link.classList.toggle('nav-active', link.getAttribute('href') === `#${cur}`);
+          })
+          if(cur === 'works' && firstEnterWorks){
+            firstEnterWorks = false;
+            document.querySelector('.filter-btn[data-filter="poster"]')?.click();
+          }
+          ticking = false;
+        })
+        ticking = true;
+      }
+    }
+    window.addEventListener('scroll', onScroll, {passive:true});
+
+    menuBtn.onclick = ()=>mobileMenu.classList.toggle('hidden');
+    mobileNavLinks.forEach(link=>link.onclick = ()=>mobileMenu.classList.add('hidden'));
+
+    if('IntersectionObserver' in window){
+      const obs = new IntersectionObserver((entries)=>{
+        entries.forEach(en=>{
+          if(en.isIntersecting){
+            en.target.classList.add('active');
+            obs.unobserve(en.target);
+          }
+        })
+      },{threshold:0.05});
+      revealElements.forEach(el=>obs.observe(el));
+    }else{
+      revealElements.forEach(el=>el.classList.add('active'));
+    }
+
+    filterBtns.forEach(btn=>{
+      btn.onclick = ()=>{
+        filterBtns.forEach(b=>b.classList.remove('filter-active'));
+        btn.classList.add('filter-active');
+        const val = btn.dataset.filter;
+        workContainer.className = 'work-container';
+        if(val === 'longimg') workContainer.classList.add('filter-longimg');
+        if(val === 'mainview') workContainer.classList.add('filter-mainview');
+        if(val === 'print') workContainer.classList.add('filter-print');
+        if(val === 'other') workContainer.classList.add('filter-other');
+        workCards.forEach(card=>{
+          const cat = card.dataset.category;
+          if(val === 'all' || cat === val){
+            card.style.display = 'block';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+          }else{
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            setTimeout(()=>card.style.display = 'none',200);
+          }
+        })
+      }
+    })
+
+    function closeModalFunc(){
+      modalImg.style.opacity = '0';
+      setTimeout(()=>{
+        imgModal.classList.add('hidden');
+        imgModal.classList.remove('flex');
+        document.body.style.overflow = '';
+        modalImg.src = '';
+      },250)
+    }
+    workCards.forEach(card=>card.onclick = ()=>{
+      modalImg.src = card.querySelector('img').src;
+      imgModal.classList.remove('hidden');
+      imgModal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      modalImg.style.opacity = '1';
+    })
+    closeModal.onclick = closeModalFunc;
+    imgModal.onclick = e=>e.target === imgModal && closeModalFunc();
+    document.onkeydown = e=>e.key === 'Escape' && closeModalFunc();
+
+    if (!('loading' in HTMLImageElement.prototype)) {
+      document.querySelectorAll('img[loading="lazy"]').forEach(img=>img.src = img.src);
+    }
+  </script>
+</body>
+</html>
