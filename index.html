@@ -4,15 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>陈朔 Shuo Chen | 平面设计作品集</title>
-  <!-- 核心资源：全部替换为国内稳定CDN -->
+  <!-- 国内稳定CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <!-- 高端字体：替换为国内镜像源，增加font-display避免阻塞渲染 -->
+  <!-- 国内字体镜像 -->
   <link rel="preconnect" href="https://fonts.font.im">
   <link rel="preconnect" href="https://fonts.gstatic.font.im" crossorigin>
   <link href="https://fonts.font.im/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 
-  <!-- Tailwind 定制配置 -->
+  <!-- Tailwind 配置 -->
   <script>
     tailwind.config = {
       theme: {
@@ -23,7 +23,6 @@
             accent: '#c9a96e',
           },
           fontFamily: {
-            // 完善字体降级栈，外部字体加载失败自动适配系统字体
             serif: ['"Playfair Display"', '"Noto Serif SC"', '"Songti SC"', 'SimSun', '"Times New Roman"', 'serif'],
             sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', '"PingFang SC"', '"Microsoft YaHei"', 'sans-serif'],
           },
@@ -51,7 +50,7 @@
     }
   </script>
 
-  <!-- 自定义样式 -->
+  <!-- 全局自定义样式 -->
   <style type="text/tailwindcss">
     @layer utilities {
       .content-auto { content-visibility: auto; }
@@ -92,6 +91,34 @@
       }
     }
 
+    /* 全局噪点背景 */
+    .noise-bg {
+      position: relative;
+    }
+    .noise-bg::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* 头像容器样式 */
+    .portrait-wrap {
+      width: 240px;
+      max-width: 100%;
+      aspect-ratio: 3/4;
+    }
+    .portrait-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
     /* 作品卡片交互 */
     .work-card img {
       transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -103,7 +130,7 @@
       -webkit-transform: scale(1.04);
     }
 
-     /* 选中文本 */
+    /* 选中文本 */
     ::selection {
       background: #c9a96e;
       color: #0a0a0a;
@@ -113,7 +140,7 @@
       color: #0a0a0a;
     }
 
-    /* 自定义光标：仅在JS加载成功后启用，避免JS失败导致光标消失 */
+    /* 自定义光标 */
     body.custom-cursor * {
       cursor: none !important;
     }
@@ -155,7 +182,7 @@
       background-color: rgba(201, 169, 110, 0.1);
     }
 
-    /* 作品布局规则：兼容多浏览器 */
+    /* 瀑布流布局兼容 */
     .work-container {
       columns: 1;
       -webkit-columns: 1;
@@ -178,7 +205,6 @@
         -moz-columns: 3;
       }
     }
-    /* 长图：强制两列 */
     .work-container.filter-longimg { 
       columns: 1 !important;
       -webkit-columns: 1 !important;
@@ -198,7 +224,6 @@
         -moz-columns: 2 !important;
       }
     }
-    /* 主画面、印刷、其他：强制单列 */
     .work-container.filter-mainview,
     .work-container.filter-print,
     .work-container.filter-other {
@@ -207,16 +232,23 @@
       -moz-columns: 1 !important;
     }
 
-    /* 确保图片不出现默认边框 */
     img {
       border: 0;
       vertical-align: middle;
+    }
+    .break-inside-avoid {
+      break-inside: avoid;
+      -webkit-break-inside: avoid;
     }
   </style>
 </head>
 
 <body class="bg-dark text-light font-sans antialiased overflow-x-hidden">
-   <!-- 顶部导航 -->
+  <!-- 自定义光标DOM（新增） -->
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+
+  <!-- 顶部导航 -->
   <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-500 py-6">
     <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
       <a href="#home" class="text-2xl font-serif tracking-widest">SHUO CHEN.</a>
@@ -417,7 +449,7 @@
   </section>
 
   <!-- 页脚 -->
-  <footer class="py-8 border-t border-white/10 bg-dark text-white/40 text-xs tracking-widest">
+  <footer class="py-8 border-t border-white/10 bg-dark text-white/40 text-xs tracking-widest relative z-10">
     <div class="container mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-4">
       <p>© 陈朔 Shuo Chen. All rights reserved.</p>
       <p>Graphic Design Portfolio</p>
@@ -426,16 +458,15 @@
 
   <!-- 作品大图弹窗 -->
   <div id="imgModal" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm hidden items-center justify-center p-4">
-    <button id="closeModal" class="absolute top-8 right-8 text-white/60 hover:text-white text-2xl transition-colors" aria-label="关闭大图">
+    <button id="closeModal" class="absolute top-8 right-8 text-white/60 hover:text-white text-2xl transition-colors z-[101]" aria-label="关闭大图">
       <i class="fa fa-times"></i>
     </button>
-    <img id="modalImg" src="" alt="作品大图" class="max-w-full max-h-[90vh] object-contain opacity-0 transition-opacity duration-500">
+    <img id="modalImg" src="" alt="作品大图" class="max-w-full max-h-[90vh] object-contain opacity-0 transition-opacity duration-500 z-[100]">
   </div>
 
   <!-- 交互脚本 -->
   <script>
-    // 检测是否为桌面端，仅桌面端启用自定义光标
-    const isDesktop = window.innerWidth > 768;
+    // 全局DOM缓存
     const cursorDot = document.querySelector('.cursor-dot');
     const cursorRing = document.querySelector('.cursor-ring');
     const navbar = document.getElementById('navbar');
@@ -452,34 +483,76 @@
     const heroContent = document.getElementById('heroContent');
     const workContainer = document.querySelector('.work-container');
     let firstEnterWorks = true;
+    const isDesktop = window.innerWidth > 768;
 
-       // 滚动导航样式 & 首页渐隐
+    // ========== 自定义光标逻辑（仅桌面端启用） ==========
+    if(isDesktop && cursorDot && cursorRing){
+      document.body.classList.add('custom-cursor');
+      let dotX = 0, dotY = 0, ringX = 0, ringY = 0;
+      let hoverTargets = document.querySelectorAll('a, button, .work-card');
+
+      // 标记光标就绪
+      cursorDot.classList.add('ready');
+      cursorRing.classList.add('ready');
+
+      // 鼠标移动
+      document.addEventListener('mousemove', (e) => {
+        dotX = e.clientX;
+        dotY = e.clientY;
+        ringX = e.clientX;
+        ringY = e.clientY;
+      });
+
+      // 悬停放大光标环
+      hoverTargets.forEach(el => {
+        el.addEventListener('mouseenter', () => cursorRing.classList.add('hover'));
+        el.addEventListener('mouseleave', () => cursorRing.classList.remove('hover'));
+      });
+
+      // 平滑动画
+      function animateCursor(){
+        // 小点跟随鼠标
+        cursorDot.style.left = `${dotX}px`;
+        cursorDot.style.top = `${dotY}px`;
+        // 大环缓动
+        ringX += (dotX - ringX) * 0.12;
+        ringY += (dotY - ringY) * 0.12;
+        cursorRing.style.left = `${ringX}px`;
+        cursorRing.style.top = `${ringY}px`;
+        requestAnimationFrame(animateCursor);
+      }
+      animateCursor();
+    }
+
+    // ========== 滚动监听：导航样式、首屏视差、导航高亮 ==========
     let ticking = false;
     function onScroll() {
       if (!ticking) {
         requestAnimationFrame(() => {
           const scrollY = window.scrollY;
+          // 首屏渐隐上移
           const fadeVal = Math.max(0, 1 - scrollY / 400);
           const translateVal = scrollY * 0.2;
           heroContent.style.opacity = fadeVal;
           heroContent.style.transform = `translateY(${translateVal}px)`;
 
+          // 导航栏背景切换
           if (scrollY > 80) {
             navbar.classList.add('py-3', 'bg-dark/80', 'backdrop-blur-md', 'border-b', 'border-white/5');
           } else {
             navbar.classList.remove('py-3', 'bg-dark/80', 'backdrop-blur-md', 'border-b', 'border-white/5');
           }
 
+          // 区块导航高亮
           const sections = ['home','works','about','contact'];
           let current = '';
           sections.forEach(id => {
             const sec = document.getElementById(id);
-            if(sec){
-              const top = sec.offsetTop - 150;
-              const height = sec.offsetHeight;
-              if(scrollY >= top && scrollY < top + height){
-                current = id;
-              }
+            if(!sec) return;
+            const top = sec.offsetTop - 150;
+            const height = sec.offsetHeight;
+            if(scrollY >= top && scrollY < top + height){
+              current = id;
             }
           });
           navLinks.forEach(link => {
@@ -489,7 +562,7 @@
             }
           });
 
-          // 首次滚动到作品区，自动切换为海报分类
+          // 首次进入作品区自动切海报
           if (current === 'works' && firstEnterWorks) {
             firstEnterWorks = false;
             const posterBtn = document.querySelector('.filter-btn[data-filter="poster"]');
@@ -503,74 +576,64 @@
     }
     window.addEventListener('scroll', onScroll, { passive: true });
 
-    // 移动端菜单
+    // ========== 移动端汉堡菜单 ==========
     menuBtn.addEventListener('click', () => {
       mobileMenu.classList.toggle('hidden');
     });
-
-    // 移动端菜单点击链接后自动关闭
     mobileNavLinks.forEach(link => {
       link.addEventListener('click', () => {
         mobileMenu.classList.add('hidden');
       });
     });
 
-    // 滚动入场动画：兼容不支持IntersectionObserver的浏览器
+    // ========== 滚动渐显动画 ==========
     if ('IntersectionObserver' in window) {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry, index) => {
           if (entry.isIntersecting) {
-            setTimeout(() => {
-              entry.target.classList.add('active');
-            }, index * 80);
+            setTimeout(() => entry.target.classList.add('active'), index * 80);
             observer.unobserve(entry.target);
           }
         });
       }, { threshold: 0.1 });
       revealElements.forEach(el => observer.observe(el));
     } else {
-      // 降级：直接显示所有内容
       revealElements.forEach(el => el.classList.add('active'));
     }
 
-    // 分类筛选 + 切换布局
+    // ========== 分类筛选逻辑 ==========
     filterBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         filterBtns.forEach(b => b.classList.remove('filter-active'));
         btn.classList.add('filter-active');
         const filterVal = btn.dataset.filter;
 
+        // 切换瀑布流布局模式
         workContainer.className = 'work-container';
-        if(filterVal === 'longimg'){
-          workContainer.classList.add('filter-longimg');
-        } else if(filterVal === 'mainview'){
-          workContainer.classList.add('filter-mainview');
-        } else if(filterVal === 'print'){
-          workContainer.classList.add('filter-print');
-        } else if(filterVal === 'other'){
-          workContainer.classList.add('filter-other');
-        }
+        if(filterVal === 'longimg') workContainer.classList.add('filter-longimg');
+        else if(filterVal === 'mainview') workContainer.classList.add('filter-mainview');
+        else if(filterVal === 'print') workContainer.classList.add('filter-print');
+        else if(filterVal === 'other') workContainer.classList.add('filter-other');
 
+        // 卡片淡入淡出
         workCards.forEach(card => {
           const cat = card.dataset.category;
           if(filterVal === 'all' || cat === filterVal){
             card.style.display = 'block';
-            setTimeout(() => {
+            requestAnimationFrame(() => {
               card.style.opacity = '1';
               card.style.transform = 'translateY(0)';
-            }, 10);
+            });
           } else {
             card.style.opacity = '0';
             card.style.transform = 'translateY(20px)';
-            setTimeout(() => {
-              card.style.display = 'none';
-            }, 250);
+            setTimeout(() => card.style.display = 'none', 250);
           }
         });
       });
     });
 
-    // 大图预览关闭
+    // ========== 大图弹窗逻辑 ==========
     const closeModalFunc = () => {
       modalImg.style.opacity = '0';
       setTimeout(() => {
@@ -580,8 +643,6 @@
         modalImg.src = '';
       }, 300);
     };
-
-    // 打开大图
     workCards.forEach(card => {
       card.addEventListener('click', () => {
         const imgSrc = card.querySelector('img').src;
@@ -594,7 +655,6 @@
         }, 80);
       });
     });
-
     closeModal.addEventListener('click', closeModalFunc);
     imgModal.addEventListener('click', (e) => {
       if(e.target === imgModal) closeModalFunc();
@@ -603,13 +663,16 @@
       if(e.key === 'Escape') closeModalFunc();
     });
 
-    // 图片懒加载兼容处理
+    // ========== 图片懒加载兼容 ==========
     if (!('loading' in HTMLImageElement.prototype)) {
-      const images = document.querySelectorAll('img[loading="lazy"]');
-      images.forEach(img => {
-        img.src = img.src;
-      });
+      const lazyImgs = document.querySelectorAll('img[loading="lazy"]');
+      lazyImgs.forEach(img => img.src = img.src);
     }
+
+    // 窗口大小变化刷新光标状态
+    window.addEventListener('resize', () => {
+      location.reload();
+    });
   </script>
 </body>
 </html>
